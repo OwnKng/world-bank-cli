@@ -3,8 +3,9 @@ import { parse } from 'json2csv'
 import {writeFile} from 'fs'
 import path = require("path")
 
-export const queryWB = async (country : string[], indicator: string) => {
-  const baseUrl = `https://api.worldbank.org/v2/country/${country.join(';')}/indicator/${indicator}?format=json`
+export const queryWB = async (country : string, indicator: string, from: number, to: number): Promise<any[]> => {
+
+  const baseUrl = `https://api.worldbank.org/v2/country/${country}/indicator/${indicator}?&date=${from}:${to}&per_page=100&format=json`
 
   try {
     const resp = await axios.get(baseUrl)
@@ -50,17 +51,23 @@ export const queryWB = async (country : string[], indicator: string) => {
 
 }
 
-export const writeCSV = (data: any) => {
+export const getCurrentYear = () => {
+    const d = new Date()
+    return d.getFullYear()
+}
 
-  const directory = path.join(__dirname, `./WorldBankExtract.csv`)
+export const writeCSV = (data: any): string | undefined => {
+
+  const directory = path.join('./Downloads', `./WorldBankExtract.csv`)
 
   try {
     const csv = parse(data)
 
     writeFile(directory, csv, function(err) {
       if(err) throw err
-      console.log(`Data retrieved and file saved in ${directory}`)
     })
+
+    return directory
 
   } catch (err) {
     console.error(err)
