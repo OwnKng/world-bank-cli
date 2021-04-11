@@ -12,7 +12,9 @@ program
     .action(() => {
     inquirer_1.prompt(prompts_1.retrievePrompts).then(({ countryCodes, indicatorCode }) => {
         const codes = countryCodes.split(" ");
-        utils_1.queryWB(codes, indicatorCode).then(response => utils_1.writeCSV(response)).catch(error => console.log(error));
+        utils_1.queryWB(codes, indicatorCode)
+            .then(response => utils_1.writeCSV(response))
+            .catch(error => console.log(error));
     });
 });
 program.parse(process.argv);

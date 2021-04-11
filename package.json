@@ -1,5 +1,5 @@
 {
-  "name": "world-bank-cli",
+  "name": "wbdata",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -26,5 +26,8 @@
     "eslint-config-airbnb-typescript-prettier": "^4.2.0",
     "inquirer": "^8.0.0",
     "json2csv": "^5.0.6"
+  },
+  "bin": {
+    "wbdata": "./dist/index.js"
   }
 }
