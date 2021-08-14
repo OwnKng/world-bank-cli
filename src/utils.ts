@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { parse } from 'json2csv'
-import {writeFile} from 'fs'
+import {writeFile} from 'fs/promises'
 import path = require("path")
+import { homedir } from 'os'
 
 export const queryWB = async (country : string, indicator: string, from: number, to: number): Promise<any[]> => {
 
@@ -56,16 +57,14 @@ export const getCurrentYear = () => {
     return d.getFullYear()
 }
 
-export const writeCSV = (data: any): string | undefined => {
+export const writeCSV = async(data: any): Promise<string | undefined> => {
 
-  const directory = path.join('./Downloads', `./WorldBankExtract.csv`)
+  const directory = await path.join(homedir(), './Downloads', `./WorldBankExtract.csv`)
 
   try {
     const csv = parse(data)
 
-    writeFile(directory, csv, function(err) {
-      if(err) throw err
-    })
+    await writeFile(directory, csv)
 
     return directory
 

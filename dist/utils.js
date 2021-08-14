@@ -3,8 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.writeCSV = exports.getCurrentYear = exports.queryWB = void 0;
 const axios_1 = require("axios");
 const json2csv_1 = require("json2csv");
-const fs_1 = require("fs");
+const promises_1 = require("fs/promises");
 const path = require("path");
+const os_1 = require("os");
 const queryWB = async (country, indicator, from, to) => {
     const baseUrl = `https://api.worldbank.org/v2/country/${country}/indicator/${indicator}?&date=${from}:${to}&per_page=100&format=json`;
     try {
@@ -43,14 +44,11 @@ const getCurrentYear = () => {
     return d.getFullYear();
 };
 exports.getCurrentYear = getCurrentYear;
-const writeCSV = (data) => {
-    const directory = path.join('./Downloads', `./WorldBankExtract.csv`);
+const writeCSV = async (data) => {
+    const directory = await path.join(os_1.homedir(), './Downloads', `./WorldBankExtract.csv`);
     try {
         const csv = json2csv_1.parse(data);
-        fs_1.writeFile(directory, csv, function (err) {
-            if (err)
-                throw err;
-        });
+        await promises_1.writeFile(directory, csv);
         return directory;
     }
     catch (err) {

@@ -24,9 +24,9 @@ program
             const to = dates[1] ? parseInt(dates[1]) : getCurrentYear()
             
             const querryResults = await queryWB(codes, indicatorCode, from, to)
-            const path = writeCSV(querryResults) 
+            const path = await writeCSV(querryResults) 
 
-            console.log(chalk.bgHex('#04BCC4').bold(` World Bank data saved in /${path}. Happy analysing! `))
+            console.log(chalk.bgHex('#04BCC4').bold(` World Bank data saved in ${path}. Happy analysing! `))
 
         } catch(err) {
             console.log(chalk.bgRed.bold(err))
